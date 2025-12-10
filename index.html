@@ -2,83 +2,577 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Sales Records</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Jollibee POS - Cart + Slides + Login</title>
+
     <style>
+        /* === Your full CSS === */
+        
+ 
         body {
-            font-family: "Poppins", Arial, sans-serif;
             background-image: url("jolly.jpg");
-            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            color: #333;
         }
-        
+
         h1 {
-            text-align: center;
-            color: #b30000;
-            margin-top: 30px;
-            letter-spacing: 1px;
+            color: rgba(200, 187, 156, 0.514);
+            margin: 10px;
+            position: relative;
+            border: 1px solid rgb(98, 1, 5);
+            padding: 10px;
+            width: 23%;
+            border-radius: 5px;
+            animation: float 4s ease-in-out infinite;
         }
         
-        #logout {
-            text-align: center;
-            margin: 15px 0;
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
         
-        #logout button,
-        #logout a,
-        #deleteBtn,
-        #restockDropdown button {
+        #settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ffcc00;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            width: 250px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-box input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .login-box button {
+            margin-top: 5px;
             background: #ffcc00;
             color: #b30000;
             border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: bold;
+            padding: 8px;
+            border-radius: 8px;
             cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            font-weight: bold;
         }
         
-        #logout button:hover,
-        #logout a:hover,
-        #deleteBtn:hover,
-        #restockDropdown button:hover {
+        .login-box button:hover {
             background: #ffb700;
-            transform: scale(1.05);
+        }
+        
+        #settings {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            width: 250px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        #settings button {
+            background: #ffcc00;
+            color: #b30000;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        #settings button:hover {
+            background: #ca1d0289;
+        }
+        
+        .slider-container {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-width: 100%;
+        }
+        
+        .product {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 1px 1px 3px black;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .product[data-id="1"] {
+            background-image: url("spag.jpg");
+        }
+        
+        .product[data-id="2"] {
+            background-image: url("sand.jpg");
+        }
+        
+        .product[data-id="3"] {
+            background-image: url("peach.jpg");
+        }
+        
+        .product[data-id="4"] {
+            background-image: url("steak.jpg");
+        }
+        
+        .product[data-id="5"] {
+            background-image: url("hotdog.jpg");
+        }
+        
+        .product[data-id="6"] {
+            background-image: url("yum.jpg");
+        }
+        
+        .product[data-id="7"] {
+            background-image: url("2.jpg");
+        }
+        
+        .product[data-id="8"] {
+            background-image: url("fries.jpg");
+        }
+        
+        .product[data-id="9"] {
+            background-image: url("sundae.jpg");
+        }
+        
+        
+        
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+        
+        .arrow:hover {
+            background: #97bd00;
+        }
+        
+        .prev {
+            left: 10px;
+        }
+        
+        .next {
+            right: 10px;
+        }
+        
+        .dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background-color: #ffcc00;
+        }
+        
+        #cart {
+            background-color: rgba(128, 128, 128, 0.5);
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            width: calc(100% - 40px);
+            max-width: 800px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         }
         
         table {
-            width: 90%;
-            margin: 20px auto;
+            width: 100%;
             border-collapse: collapse;
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #ccc;
-            /* dagdag border sa buong table */
         }
         
         th,
         td {
-            padding: 10px;
-            text-align: center;
             border: 1px solid #ccc;
-            /* linya sa pagitan ng bawat column */
+            padding: 8px;
+            text-align: center;
         }
         
-        th {
-            background-color: #b30000;
-            color: #fff;
-            text-transform: uppercase;
-            font-size: 14px;
+        .cart-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
         }
         
-        tr:hover {
-            background-color: #fff7f7;
+        button {
+            padding: 8px 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .btn-cancel {
+            background: #d9534f;
+        }
+        
+        .btn-cancel:hover {
+            background: #c9302c;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>JOLLYY LA PIRME</h1>
+    <button id="settings-btn" onclick="toggleLogin()">LOG IN</button>
+
+    <!-- Slider -->
+    <div class="slider-container">
+        <div class="slides" id="slides"></div>
+        <button class="arrow prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="arrow next" onclick="changeSlide(1)">&#10095;</button>
+    </div>
+    <div class="dots" id="dots"></div>
+
+    <!-- Cart -->
+    <div id="cart">
+        <h2>🛒 Cart</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items"></tbody>
+        </table>
+        <h3 id="grand-total">Grand Total: ₱0</h3>
+        <div class="cart-actions">
+            <button id="checkout-btn" onclick="checkout()">Checkout</button>
+            <button id="cancel-btn" class="btn-cancel" onclick="cancelOrder()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div class="login-box" id="login-box">
+        <h3>Admin Login</h3>
+        <label>Username:</label>
+        <input type="text" id="username" placeholder="Enter username">
+        <label>Password:</label>
+        <input type="password" id="password" placeholder="Enter password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Settings -->
+    <div id="settings">
+        <h3>⚙ Settings</h3>
+        <button onclick="goToSales()">View Sales Records</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        const ADMIN = {
+            username: "admin",
+            password: "12345"
+        };
+
+        const products = [{
+            id: 1,
+            name: "Jolly Spaghetti w/ Drinks",
+            price: 85
+        }, {
+            id: 2,
+            name: "Chicken Sandwich",
+            price: 70
+        }, {
+            id: 3,
+            name: "Peach Mango Pie",
+            price: 25
+        }, {
+            id: 4,
+            name: "Burger Steak",
+            price: 99
+        }, {
+            id: 5,
+            name: "Jolly Hotdog Classic",
+            price: 60
+        }, {
+            id: 6,
+            name: "Yumburger",
+            price: 45
+        }, {
+            id: 7,
+            name: "2-pc Chickenjoy",
+            price: 150
+        }, {
+            id: 8,
+            name: "Jolly Fries",
+            price: 55
+        }, {
+            id: 9,
+            name: "Jolly Sundae",
+            price: 40    
+        }]
+    
+           
+    
+          
+
+        const slidesContainer = document.getElementById("slides");
+        const dotsContainer = document.getElementById("dots");
+
+        
+        for (let i = 0; i < products.length; i += 3) {
+            const slide = document.createElement("div");
+            slide.classList.add("slide");
+            products.slice(i, i + 3).forEach(p => {
+                const div = document.createElement("div");
+                div.className = "product";
+                div.setAttribute("data-id", p.id);
+                div.innerHTML = `
+          <h4>${p.name}</h4>
+          <p>₱${p.price}</p>
+          <button onclick="addToCart(${p.id})">Add to Cart</button>
+        `;
+                slide.appendChild(div);
+            });
+            slidesContainer.appendChild(slide);
+            const dot = document.createElement("span");
+            dot.className = "dot";
+            dot.onclick = () => goToSlide(i / 3);
+            dotsContainer.appendChild(dot);
+        }
+
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            const totalSlides = slidesContainer.children.length;
+            if (index >= totalSlides) currentSlide = 0;
+            else if (index < 0) currentSlide = totalSlides - 1;
+            else currentSlide = index;
+
+            
+            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === currentSlide));
+        }
+
+        function changeSlide(n) {
+            showSlide(currentSlide + n);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+        showSlide(0);
+
+        // CART LOGIC
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function saveCart() {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        function addToCart(id) {
+            const prod = products.find(p => p.id === id);
+            const item = cart.find(i => i.prod.id === id);
+            if (item) item.qty++;
+            else cart.push({
+                prod,
+                qty: 1
+            });
+            saveCart();
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById("cart-items");
+            const grandEl = document.getElementById("grand-total");
+            const checkoutBtn = document.getElementById("checkout-btn");
+            const cancelBtn = document.getElementById("cancel-btn");
+
+            cartItems.innerHTML = "";
+            if (cart.length === 0) {
+             
+                cartItems.innerHTML = `<tr><td colspan="4">Cart is empty</td></tr>`;
+                grandEl.innerText = "Grand Total: ₱0";
+                checkoutBtn.disabled = true;
+                cancelBtn.disabled = true;
+                return;
+            }
+
+            let grandTotal = 0;
+            cart.forEach(item => {
+                const total = item.prod.price * item.qty;
+                grandTotal += total;
+             
+                cartItems.innerHTML += `
+          <tr>
+            <td>${item.prod.name}</td>
+            <td>₱${item.prod.price}</td>
+            <td>${item.qty}</td>
+            <td>₱${total}</td>
+          </tr>`;
+            });
+
+            grandEl.innerText = "Grand Total: ₱" + grandTotal;
+            checkoutBtn.disabled = false;
+            cancelBtn.disabled = false;
+        }
+
+        function checkout() {
+            if (cart.length === 0) return alert("Cart is empty!");
+            const totalAmount = cart.reduce((sum, item) => sum + item.prod.price * item.qty, 0);
+            
+            let payment = parseFloat(prompt(`Your total is ₱${totalAmount}. Please enter payment amount:`));
+            if (isNaN(payment)) return alert("Invalid amount.");
+            if (payment < totalAmount) return alert("Insufficient payment.");
+            const change = payment - totalAmount;
+            const validItems = cart.map(i => ({
+                name: i.prod.name,
+                price: i.prod.price,
+                qty: i.qty
+            }));
+            const sales = JSON.parse(localStorage.getItem("sales")) || [];
+            sales.push({
+                date: new Date().toLocaleString(),
+                items: validItems,
+                total: totalAmount,
+                payment,
+                change
+            });
+            localStorage.setItem("sales", JSON.stringify(sales));
+         
+            alert(`Payment successful!\n\nTotal: ₱${totalAmount}\nPayment: ₱${payment}\nChange: ₱${change}`);
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+
+        function cancelOrder() {
+            if (cart.length === 0) return alert("Cart is already empty.");
+            if (!confirm("Cancel this order?")) return;
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+
+        function toggleLogin() {
+            const loginBox = document.getElementById("login-box");
+            const settingsBox = document.getElementById("settings");
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                settingsBox.style.display = settingsBox.style.display === "none" ? "flex" : "none";
+            } else {
+                loginBox.style.display = loginBox.style.display === "none" ? "flex" : "none";
+            }
+        }
+
+        function login() {
+            const user = document.getElementById("username").value;
+            const pass = document.getElementById("password").value;
+            if (user === ADMIN.username && pass === ADMIN.password) {
+                localStorage.setItem("isLoggedIn", "true");
+                alert("Login successful!");
+                document.getElementById("login-box").style.display = "none";
+                document.getElementById("settings").style.display = "flex";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+
+        function goToSales() {
+            window.location.href = "sales.html";
+        }
+
+        function logout() {
+            if (!confirm("Are you sure you want to log out?")) return;
+            localStorage.removeItem("isLoggedIn");
+            document.getElementById("settings").style.display = "none";
+            alert("Logged out.");
+        }
+
+        renderCart();
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            document.getElementById("settings").style.display = "flex";
+        }
+    </script>
+</body>
+
+</html>background-color: #fff7f7;
         }
         
         .action-bar {
