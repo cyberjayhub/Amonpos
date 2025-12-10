@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login | POS System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, hsl(48, 100%, 50%), #ff9900);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            color: #d10000;
+            margin-bottom: 20px;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 6px rgba(255, 102, 0, 0.3);
+        }
+        
+        button {
+            width: 100%;
+            background: #d10000;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background: #b30000;
+            transform: scale(1.03);
+        }
+        
+        .footer-text {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h1>Admin Login</h1>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password">
+
+        <button onclick="login()">Login</button>
+
+        <p class="footer-text">© 2025 POS System | Jollibee Edition</p>
+    </div>
+
+    <script>
+        const ADMIN = {
+            username: "admin",
+            password: "12345"
+        };
+
+        function login() {
+            const user = document.getElementById("username").value.trim();
+            const pass = document.getElementById("password").value.trim();
+
+            if (user === ADMIN.username && pass === ADMIN.password) {
+                localStorage.setItem("isLoggedIn", "true");
+                alert("Login successful!");
+                window.location.href = "pos.html";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+    </script>
+</body>
+
+</html>
