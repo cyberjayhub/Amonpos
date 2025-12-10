@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login | POS System</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, hsl(48, 100%, 50%), #ff9900);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            color: #d10000;
+            margin-bottom: 20px;
+            font-size: 24px;
+            letter-spacing: 1px;
+        }
+        
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff6600;
+            box-shadow: 0 0 6px rgba(255, 102, 0, 0.3);
+        }
+        
+        button {
+            width: 100%;
+            background: #d10000;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background: #b30000;
+            transform: scale(1.03);
+        }
+        
+        .footer-text {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h1>Admin Login</h1>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username">
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password">
+
+        <button onclick="login()">Login</button>
+
+        <p class="footer-text">© 2025 POS System | Jollibee Edition</p>
+    </div>
+
+    <script>
+        const ADMIN = {
+            username: "admin",
+            password: "12345"
+        };
+
+        function login() {
+            const user = document.getElementById("username").value.trim();
+            const pass = document.getElementById("password").value.trim();
+
+            if (user === ADMIN.username && pass === ADMIN.password) {
+                localStorage.setItem("isLoggedIn", "true");
+                alert("Login successful!");
+                window.location.href = "pos.html";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Jollibee POS - Cart + Slides + Login</title>
+
+    <style>
+        /* === Your full CSS === */
+        
+ 
+        body {
+            background-image: url("jolly.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: rgba(200, 187, 156, 0.514);
+            margin: 10px;
+            position: relative;
+            border: 1px solid rgb(98, 1, 5);
+            padding: 10px;
+            width: 23%;
+            border-radius: 5px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        #settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ffcc00;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            width: 250px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-box input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .login-box button {
+            margin-top: 5px;
+            background: #ffcc00;
+            color: #b30000;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .login-box button:hover {
+            background: #ffb700;
+        }
+        
+        #settings {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            width: 250px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        #settings button {
+            background: #ffcc00;
+            color: #b30000;
+            border: none;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        #settings button:hover {
+            background: #ca1d0289;
+        }
+        
+        .slider-container {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-width: 100%;
+        }
+        
+        .product {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 1px 1px 3px black;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .product[data-id="1"] {
+            background-image: url("spag.jpg");
+        }
+        
+        .product[data-id="2"] {
+            background-image: url("sand.jpg");
+        }
+        
+        .product[data-id="3"] {
+            background-image: url("peach.jpg");
+        }
+        
+        .product[data-id="4"] {
+            background-image: url("steak.jpg");
+        }
+        
+        .product[data-id="5"] {
+            background-image: url("hotdog.jpg");
+        }
+        
+        .product[data-id="6"] {
+            background-image: url("yum.jpg");
+        }
+        
+        .product[data-id="7"] {
+            background-image: url("2.jpg");
+        }
+        
+        .product[data-id="8"] {
+            background-image: url("fries.jpg");
+        }
+        
+        .product[data-id="9"] {
+            background-image: url("sundae.jpg");
+        }
+        
+        
+        
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+        
+        .arrow:hover {
+            background: #97bd00;
+        }
+        
+        .prev {
+            left: 10px;
+        }
+        
+        .next {
+            right: 10px;
+        }
+        
+        .dots {
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .dot {
+            height: 10px;
+            width: 10px;
+            margin: 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background-color: #ffcc00;
+        }
+        
+        #cart {
+            background-color: rgba(128, 128, 128, 0.5);
+            margin: 20px auto;
+            padding: 15px;
+            border-radius: 10px;
+            width: calc(100% - 40px);
+            max-width: 800px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .cart-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button {
+            padding: 8px 12px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .btn-cancel {
+            background: #d9534f;
+        }
+        
+        .btn-cancel:hover {
+            background: #c9302c;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>JOLLYY LA PIRME</h1>
+    <button id="settings-btn" onclick="toggleLogin()">LOG IN</button>
+
+    <!-- Slider -->
+    <div class="slider-container">
+        <div class="slides" id="slides"></div>
+        <button class="arrow prev" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="arrow next" onclick="changeSlide(1)">&#10095;</button>
+    </div>
+    <div class="dots" id="dots"></div>
+
+    <!-- Cart -->
+    <div id="cart">
+        <h2>🛒 Cart</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items"></tbody>
+        </table>
+        <h3 id="grand-total">Grand Total: ₱0</h3>
+        <div class="cart-actions">
+            <button id="checkout-btn" onclick="checkout()">Checkout</button>
+            <button id="cancel-btn" class="btn-cancel" onclick="cancelOrder()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div class="login-box" id="login-box">
+        <h3>Admin Login</h3>
+        <label>Username:</label>
+        <input type="text" id="username" placeholder="Enter username">
+        <label>Password:</label>
+        <input type="password" id="password" placeholder="Enter password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Settings -->
+    <div id="settings">
+        <h3>⚙ Settings</h3>
+        <button onclick="goToSales()">View Sales Records</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        const ADMIN = {
+            username: "admin",
+            password: "12345"
+        };
+
+        const products = [{
+            id: 1,
+            name: "Jolly Spaghetti w/ Drinks",
+            price: 85
+        }, {
+            id: 2,
+            name: "Chicken Sandwich",
+            price: 70
+        }, {
+            id: 3,
+            name: "Peach Mango Pie",
+            price: 25
+        }, {
+            id: 4,
+            name: "Burger Steak",
+            price: 99
+        }, {
+            id: 5,
+            name: "Jolly Hotdog Classic",
+            price: 60
+        }, {
+            id: 6,
+            name: "Yumburger",
+            price: 45
+        }, {
+            id: 7,
+            name: "2-pc Chickenjoy",
+            price: 150
+        }, {
+            id: 8,
+            name: "Jolly Fries",
+            price: 55
+        }, {
+            id: 9,
+            name: "Jolly Sundae",
+            price: 40    
+        }]
+    
+           
+    
+          
+
+        const slidesContainer = document.getElementById("slides");
+        const dotsContainer = document.getElementById("dots");
+
+        
+        for (let i = 0; i < products.length; i += 3) {
+            const slide = document.createElement("div");
+            slide.classList.add("slide");
+            products.slice(i, i + 3).forEach(p => {
+                const div = document.createElement("div");
+                div.className = "product";
+                div.setAttribute("data-id", p.id);
+                div.innerHTML = `
+          <h4>${p.name}</h4>
+          <p>₱${p.price}</p>
+          <button onclick="addToCart(${p.id})">Add to Cart</button>
+        `;
+                slide.appendChild(div);
+            });
+            slidesContainer.appendChild(slide);
+            const dot = document.createElement("span");
+            dot.className = "dot";
+            dot.onclick = () => goToSlide(i / 3);
+            dotsContainer.appendChild(dot);
+        }
+
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            const totalSlides = slidesContainer.children.length;
+            if (index >= totalSlides) currentSlide = 0;
+            else if (index < 0) currentSlide = totalSlides - 1;
+            else currentSlide = index;
+
+            
+            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === currentSlide));
+        }
+
+        function changeSlide(n) {
+            showSlide(currentSlide + n);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+        showSlide(0);
+
+        // CART LOGIC
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function saveCart() {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        function addToCart(id) {
+            const prod = products.find(p => p.id === id);
+            const item = cart.find(i => i.prod.id === id);
+            if (item) item.qty++;
+            else cart.push({
+                prod,
+                qty: 1
+            });
+            saveCart();
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById("cart-items");
+            const grandEl = document.getElementById("grand-total");
+            const checkoutBtn = document.getElementById("checkout-btn");
+            const cancelBtn = document.getElementById("cancel-btn");
+
+            cartItems.innerHTML = "";
+            if (cart.length === 0) {
+             
+                cartItems.innerHTML = `<tr><td colspan="4">Cart is empty</td></tr>`;
+                grandEl.innerText = "Grand Total: ₱0";
+                checkoutBtn.disabled = true;
+                cancelBtn.disabled = true;
+                return;
+            }
+
+            let grandTotal = 0;
+            cart.forEach(item => {
+                const total = item.prod.price * item.qty;
+                grandTotal += total;
+             
+                cartItems.innerHTML += `
+          <tr>
+            <td>${item.prod.name}</td>
+            <td>₱${item.prod.price}</td>
+            <td>${item.qty}</td>
+            <td>₱${total}</td>
+          </tr>`;
+            });
+
+            grandEl.innerText = "Grand Total: ₱" + grandTotal;
+            checkoutBtn.disabled = false;
+            cancelBtn.disabled = false;
+        }
+
+        function checkout() {
+            if (cart.length === 0) return alert("Cart is empty!");
+            const totalAmount = cart.reduce((sum, item) => sum + item.prod.price * item.qty, 0);
+            
+            let payment = parseFloat(prompt(`Your total is ₱${totalAmount}. Please enter payment amount:`));
+            if (isNaN(payment)) return alert("Invalid amount.");
+            if (payment < totalAmount) return alert("Insufficient payment.");
+            const change = payment - totalAmount;
+            const validItems = cart.map(i => ({
+                name: i.prod.name,
+                price: i.prod.price,
+                qty: i.qty
+            }));
+            const sales = JSON.parse(localStorage.getItem("sales")) || [];
+            sales.push({
+                date: new Date().toLocaleString(),
+                items: validItems,
+                total: totalAmount,
+                payment,
+                change
+            });
+            localStorage.setItem("sales", JSON.stringify(sales));
+         
+            alert(`Payment successful!\n\nTotal: ₱${totalAmount}\nPayment: ₱${payment}\nChange: ₱${change}`);
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+
+        function cancelOrder() {
+            if (cart.length === 0) return alert("Cart is already empty.");
+            if (!confirm("Cancel this order?")) return;
+            cart = [];
+            saveCart();
+            renderCart();
+        }
+
+        function toggleLogin() {
+            const loginBox = document.getElementById("login-box");
+            const settingsBox = document.getElementById("settings");
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                settingsBox.style.display = settingsBox.style.display === "none" ? "flex" : "none";
+            } else {
+                loginBox.style.display = loginBox.style.display === "none" ? "flex" : "none";
+            }
+        }
+
+        function login() {
+            const user = document.getElementById("username").value;
+            const pass = document.getElementById("password").value;
+            if (user === ADMIN.username && pass === ADMIN.password) {
+                localStorage.setItem("isLoggedIn", "true");
+                alert("Login successful!");
+                document.getElementById("login-box").style.display = "none";
+                document.getElementById("settings").style.display = "flex";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+
+        function goToSales() {
+            window.location.href = "sales.html";
+        }
+
+        function logout() {
+            if (!confirm("Are you sure you want to log out?")) return;
+            localStorage.removeItem("isLoggedIn");
+            document.getElementById("settings").style.display = "none";
+            alert("Logged out.");
+        }
+
+        renderCart();
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            document.getElementById("settings").style.display = "flex";
+        }
+    </script>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Records</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: "Poppins", Arial, sans-serif;
+            background-image: url("jolly.jpg");
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #b30000;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+        
+        #logout {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        #logout button,
+        #logout a,
+        #deleteBtn,
+        #restockDropdown button {
+            background: #ffcc00;
+            color: #b30000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        #logout button:hover,
+        #logout a:hover,
+        #deleteBtn:hover,
+        #restockDropdown button:hover {
+            background: #ffb700;
+            transform: scale(1.05);
+        }
+        
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            /* dagdag border sa buong table */
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            /* linya sa pagitan ng bawat column */
+        }
+        
+        th {
+            background-color: #b30000;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #fff7f7;
+        }
+        
+        .action-bar {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        #deleteBtn {
+            background-color: #d9534f;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        #deleteBtn:hover {
+            background-color: #c9302c;
+        }
+        /* Dropdown style */
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 220px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            border-radius: 8px;
+        }
+        
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            border: none;
+            text-align: left;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .dropdown-content button:hover {
+            background: #ffeb99;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                font-size: 13px;
+            }
+            td,
+            th {
+                padding: 8px;
+            }
+            #logout button,
+            #logout a {
+                display: block;
+                margin: 5px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📊 Sales Records</h1>
+
+    <div id="logout">
+        <button onclick="logout()">Logout</button>
+        <a href="pos.html">Go to POS</a>
+    </div>
+
+    <div class="action-bar">
+        <button id="deleteBtn" onclick="deleteSelected()">🗑 Delete Selected</button>
+    </div>
+
+    <div class="action-bar">
+        <div class="dropdown" id="restockDropdown">
+            <button> Restock Products</button>
+            <div class="dropdown-content" id="restockList">
+                <!-- Dynamic product list will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="salesBody"></tbody>
+    </table>
+
+    <script>
+        // Kung hindi naka-login si admin, ibabalik sa POS
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "pos.html";
+        }
+
+        const products = [{
+            id: 1,
+            name: "Jolly Spaghetti w/ Drinks"
+        }, {
+            id: 2,
+            name: "Chicken Sandwich"
+        }, {
+            id: 3,
+            name: "Peach Mango Pie"
+        }, {
+            id: 4,
+            name: "Burger Steak"
+        }, {
+            id: 5,
+            name: "Jolly Hotdog Classic"
+        }, {
+            id: 6,
+            name: "Yumburger"
+        }, {
+            id: 7,
+            name: "2-pc Chickenjoy"
+        }, {
+            id: 8,
+            name: "Jolly Fries"
+        }, {
+            id: 9,
+            name: "Jolly Sundae"
+        }];
+
+        function populateDropdown() {
+            const list = document.getElementById("restockList");
+            list.innerHTML = "";
+
+            const allBtn = document.createElement("button");
+            allBtn.innerText = "🔁 Restock All (Back to 20)";
+            allBtn.onclick = () => restockProduct("all");
+            list.appendChild(allBtn);
+
+            products.forEach(p => {
+                const btn = document.createElement("button");
+                btn.innerText = p.name;
+                btn.onclick = () => restockProduct(p.id);
+                list.appendChild(btn);
+            });
+        }
+
+        populateDropdown();
+
+        function peso(value) {
+            return value.toLocaleString("en-PH", {
+                style: "currency",
+                currency: "PHP"
+            });
+        }
+
+        let sales = JSON.parse(localStorage.getItem("sales")) || [];
+        sales = sales.map(sale => {
+            const validItems = (sale.items || []).filter(i => i && i.name && i.price != null && i.qty > 0);
+            return {
+                ...sale,
+                items: validItems,
+                total: validItems.reduce((sum, i) => sum + (i.price * i.qty), 0)
+            };
+        }).filter(sale => sale.items.length > 0);
+
+        localStorage.setItem("sales", JSON.stringify(sales));
+
+        const tbody = document.getElementById("salesBody");
+
+        function renderTable() {
+            tbody.innerHTML = "";
+            if (sales.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='4'>No sales yet</td></tr>";
+            } else {
+                sales.forEach((sale, index) => {
+                    sale.items.forEach((item, itemIndex) => {
+                        const tr = document.createElement("tr");
+
+                        if (itemIndex === 0) {
+                            tr.innerHTML = `
+                                <td rowspan="${sale.items.length}">
+                                    <input type="checkbox" class="delete-checkbox" data-index="${index}">
+                                </td>
+                                <td rowspan="${sale.items.length}">${sale.date}</td>
+                                <td>${item.name} (x${item.qty}) - ${peso(item.price)}</td>
+                                <td rowspan="${sale.items.length}"><strong>${peso(sale.total)}</strong></td>
+                            `;
+                        } else {
+                            tr.innerHTML = `
+                                <td>${item.name} (x${item.qty}) - ${peso(item.price)}</td>
+                            `;
+                        }
+
+                        tbody.appendChild(tr);
+                    });
+                });
+            }
+        }
+
+        renderTable();
+
+function deleteSelected() {
+    const checkboxes = document.querySelectorAll(".delete-checkbox:checked");
+    if (checkboxes.length === 0) {
+        alert("No records selected for deletion.");
+        return;
+    }
+    if (!confirm("Are you sure you want to delete the selected record(s)?")) return;
+
+    const indexesToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index));
+    sales = sales.filter((_, idx) => !indexesToDelete.includes(idx));
+    localStorage.setItem("sales", JSON.stringify(sales));
+    renderTable();
+}
+
+document.getElementById("selectAll").addEventListener("change", function() {
+    const all = document.querySelectorAll(".delete-checkbox");
+    all.forEach(cb => cb.checked = this.checked);
+});
+
+function restockProduct(id) {
+    const stockData = JSON.parse(localStorage.getItem("stocks")) || {};
+
+    if (id === "all") {
+        if (!confirm("Sigurado ka nga gusto mo i-restock NGA TANAN (back to 10)?")) return;
+        products.forEach(p => stockData[p.id] = 10);
+        alert("✔ Na-restock na an tanan nga produkto (10 stocks each).");
+    } else {
+        const product = products.find(p => p.id === id);
+        if (!confirm(`Sigurado ka nga gusto mo i-restock an ${product.name}?`)) return;
+        stockData[id] = 10;
+        alert(`✔ ${product.name} na-restock na (10 stocks).`);
+    }
+
+    localStorage.setItem("stocks", JSON.stringify(stockData));
+}
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem("isLoggedIn");
+                alert("You have been logged out.");
+                window.location.href = "pos.html";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
