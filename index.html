@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Records</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: "Poppins", Arial, sans-serif;
+            background-image: url("jolly.jpg");
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #b30000;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+        
+        #logout {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        #logout button,
+        #logout a,
+        #deleteBtn,
+        #restockDropdown button {
+            background: #ffcc00;
+            color: #b30000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        #logout button:hover,
+        #logout a:hover,
+        #deleteBtn:hover,
+        #restockDropdown button:hover {
+            background: #ffb700;
+            transform: scale(1.05);
+        }
+        
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            /* dagdag border sa buong table */
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            /* linya sa pagitan ng bawat column */
+        }
+        
+        th {
+            background-color: #b30000;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background-color: #fff7f7;
+        }
+        
+        .action-bar {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        #deleteBtn {
+            background-color: #d9534f;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        #deleteBtn:hover {
+            background-color: #c9302c;
+        }
+        /* Dropdown style */
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 220px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            border-radius: 8px;
+        }
+        
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            border: none;
+            text-align: left;
+            font-weight: normal;
+            cursor: pointer;
+        }
+        
+        .dropdown-content button:hover {
+            background: #ffeb99;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            table {
+                width: 100%;
+                font-size: 13px;
+            }
+            td,
+            th {
+                padding: 8px;
+            }
+            #logout button,
+            #logout a {
+                display: block;
+                margin: 5px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📊 Sales Records</h1>
+
+    <div id="logout">
+        <button onclick="logout()">Logout</button>
+        <a href="pos.html">Go to POS</a>
+    </div>
+
+    <div class="action-bar">
+        <button id="deleteBtn" onclick="deleteSelected()">🗑 Delete Selected</button>
+    </div>
+
+    <div class="action-bar">
+        <div class="dropdown" id="restockDropdown">
+            <button> Restock Products</button>
+            <div class="dropdown-content" id="restockList">
+                <!-- Dynamic product list will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="salesBody"></tbody>
+    </table>
+
+    <script>
+        // Kung hindi naka-login si admin, ibabalik sa POS
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "pos.html";
+        }
+
+        const products = [{
+            id: 1,
+            name: "Jolly Spaghetti w/ Drinks"
+        }, {
+            id: 2,
+            name: "Chicken Sandwich"
+        }, {
+            id: 3,
+            name: "Peach Mango Pie"
+        }, {
+            id: 4,
+            name: "Burger Steak"
+        }, {
+            id: 5,
+            name: "Jolly Hotdog Classic"
+        }, {
+            id: 6,
+            name: "Yumburger"
+        }, {
+            id: 7,
+            name: "2-pc Chickenjoy"
+        }, {
+            id: 8,
+            name: "Jolly Fries"
+        }, {
+            id: 9,
+            name: "Jolly Sundae"
+        }];
+
+        function populateDropdown() {
+            const list = document.getElementById("restockList");
+            list.innerHTML = "";
+
+            const allBtn = document.createElement("button");
+            allBtn.innerText = "🔁 Restock All (Back to 20)";
+            allBtn.onclick = () => restockProduct("all");
+            list.appendChild(allBtn);
+
+            products.forEach(p => {
+                const btn = document.createElement("button");
+                btn.innerText = p.name;
+                btn.onclick = () => restockProduct(p.id);
+                list.appendChild(btn);
+            });
+        }
+
+        populateDropdown();
+
+        function peso(value) {
+            return value.toLocaleString("en-PH", {
+                style: "currency",
+                currency: "PHP"
+            });
+        }
+
+        let sales = JSON.parse(localStorage.getItem("sales")) || [];
+        sales = sales.map(sale => {
+            const validItems = (sale.items || []).filter(i => i && i.name && i.price != null && i.qty > 0);
+            return {
+                ...sale,
+                items: validItems,
+                total: validItems.reduce((sum, i) => sum + (i.price * i.qty), 0)
+            };
+        }).filter(sale => sale.items.length > 0);
+
+        localStorage.setItem("sales", JSON.stringify(sales));
+
+        const tbody = document.getElementById("salesBody");
+
+        function renderTable() {
+            tbody.innerHTML = "";
+            if (sales.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='4'>No sales yet</td></tr>";
+            } else {
+                sales.forEach((sale, index) => {
+                    sale.items.forEach((item, itemIndex) => {
+                        const tr = document.createElement("tr");
+
+                        if (itemIndex === 0) {
+                            tr.innerHTML = `
+                                <td rowspan="${sale.items.length}">
+                                    <input type="checkbox" class="delete-checkbox" data-index="${index}">
+                                </td>
+                                <td rowspan="${sale.items.length}">${sale.date}</td>
+                                <td>${item.name} (x${item.qty}) - ${peso(item.price)}</td>
+                                <td rowspan="${sale.items.length}"><strong>${peso(sale.total)}</strong></td>
+                            `;
+                        } else {
+                            tr.innerHTML = `
+                                <td>${item.name} (x${item.qty}) - ${peso(item.price)}</td>
+                            `;
+                        }
+
+                        tbody.appendChild(tr);
+                    });
+                });
+            }
+        }
+
+        renderTable();
+
+function deleteSelected() {
+    const checkboxes = document.querySelectorAll(".delete-checkbox:checked");
+    if (checkboxes.length === 0) {
+        alert("No records selected for deletion.");
+        return;
+    }
+    if (!confirm("Are you sure you want to delete the selected record(s)?")) return;
+
+    const indexesToDelete = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index));
+    sales = sales.filter((_, idx) => !indexesToDelete.includes(idx));
+    localStorage.setItem("sales", JSON.stringify(sales));
+    renderTable();
+}
+
+document.getElementById("selectAll").addEventListener("change", function() {
+    const all = document.querySelectorAll(".delete-checkbox");
+    all.forEach(cb => cb.checked = this.checked);
+});
+
+function restockProduct(id) {
+    const stockData = JSON.parse(localStorage.getItem("stocks")) || {};
+
+    if (id === "all") {
+        if (!confirm("Sigurado ka nga gusto mo i-restock NGA TANAN (back to 10)?")) return;
+        products.forEach(p => stockData[p.id] = 10);
+        alert("✔ Na-restock na an tanan nga produkto (10 stocks each).");
+    } else {
+        const product = products.find(p => p.id === id);
+        if (!confirm(`Sigurado ka nga gusto mo i-restock an ${product.name}?`)) return;
+        stockData[id] = 10;
+        alert(`✔ ${product.name} na-restock na (10 stocks).`);
+    }
+
+    localStorage.setItem("stocks", JSON.stringify(stockData));
+}
+        function logout() {
+            if (confirm("Are you sure you want to log out?")) {
+                localStorage.removeItem("isLoggedIn");
+                alert("You have been logged out.");
+                window.location.href = "pos.html";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
